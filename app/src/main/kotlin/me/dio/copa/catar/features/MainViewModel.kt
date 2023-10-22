@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import me.dio.copa.catar.core.BaseViewModel
+import me.dio.copa.catar.domain.model.Match
 import me.dio.copa.catar.domain.model.MatchDomain
 import me.dio.copa.catar.domain.usecase.GetMatchesUseCase
 import me.dio.copa.catar.remote.NotFoundException
@@ -38,6 +39,10 @@ class MainViewModel @Inject constructor(
                     copy(matches = matches)
                 }
             }
+    }
+
+    fun toggleNotification(match: Match) {
+
     }
 }
 
