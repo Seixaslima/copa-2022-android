@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import me.dio.copa.catar.extensions.observe
+import me.dio.copa.catar.notification.scheduler.extensions.NotificationMatcherWorker
 import me.dio.copa.catar.ui.theme.Copa2022Theme
 
 @AndroidEntryPoint
@@ -18,6 +20,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        observeActions()
         setContent {
             Copa2022Theme {
                 val state by viewModel.state.collectAsState()
@@ -26,18 +29,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-}
+    private fun observeActions() {
+        viewModel.action.observe(this) { action ->
+            when (action) {
+                is MainUiAction.DisableNotification -> {
+                    NotificationMatcherWorker.cancel(applicationContext, action.match)
+                }
+                is MainUiAction.EnableNotification -> {
+                    NotificationMatcherWorker.start(applicationContext,action.match)
+                }
+                is MainUiAction.MatchesNotFound -> TODO()
+                MainUiAction.Unexpected -> TODO()
+            }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Composable
-@Preview(showBackground = true)
-fun DefaultPreview() {
-
-    Copa2022Theme {
-        MainScreen(matchs = emptyList(),)
+        }
     }
+
 }
+
+
+
+

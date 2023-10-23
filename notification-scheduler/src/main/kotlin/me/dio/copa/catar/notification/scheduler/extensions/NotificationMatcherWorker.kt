@@ -18,7 +18,7 @@ private const val  NOTIFICATION_CONTENT_KEY = "NOTIFICATION_CONTENT_KEY"
 class NotificationMatcherWorker(
     private val context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParams) {
+) : Worker(context, workerParameters) {
 
 
     override fun doWork(): Result {
